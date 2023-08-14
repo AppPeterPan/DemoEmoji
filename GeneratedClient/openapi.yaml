@@ -1,0 +1,83 @@
+openapi: 3.0.0
+info:
+  title: Emoji API
+  version: 1.0.0
+servers:
+  - url: https://emoji-api.com
+
+paths:
+  /emojis:
+    get:
+      operationId: searchEmojis
+      summary: Search for emojis
+      parameters:
+        - in: query
+          name: search
+          schema:
+            type: string
+          description: The search query for finding related emojis
+        - in: query
+          name: access_key
+          required: true
+          schema:
+            type: string
+          description: Access key to use the API
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Emoji'
+  
+  /categories:
+    get:
+      operationId: getCategories
+      summary: Get categories
+      parameters:
+        - in: query
+          name: access_key
+          required: true
+          schema:
+            type: string
+          description: Access key to use the API
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+
+components:
+  schemas:
+    Emoji:
+      type: object
+      properties:
+        slug:
+          type: string
+        character:
+          type: string
+        unicodeName:
+          type: string
+        codePoint:
+          type: string
+        group:
+          type: string
+        subGroup:
+          type: string
+
+    Category:
+      type: object
+      properties:
+        slug:
+          type: string
+        subCategories:
+          type: array
+          items:
+            type: string
+

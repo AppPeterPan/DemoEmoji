@@ -6,16 +6,26 @@
 //
 
 import SwiftUI
+import GeneratedClient
 
 struct ContentView: View {
+    @State private var emojis = [Components.Schemas.Emoji]()
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        List(emojis, id:\.character) { emoji in
+            HStack {
+                Text(emoji.character ?? "")
+                Text(emoji.unicodeName ?? "")
+            }
+            .font(.largeTitle)
         }
-        .padding()
+        .task {
+            do {
+                emojis = try await EmojiClient().searchEmojis(search: "computer")
+            } catch {
+                
+            }
+        }
     }
 }
 
